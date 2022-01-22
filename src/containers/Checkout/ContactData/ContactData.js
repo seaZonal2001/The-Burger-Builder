@@ -8,6 +8,7 @@ import Spinner from "../../../components/UI/Spinner/Spinner";
 import Input from "../../../components/UI/Input/Input";
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/index';
+import {updateObject,checkValidity} from '../../../shared/utility';
 
 class ContactData extends Component {
   state = {
@@ -109,38 +110,27 @@ class ContactData extends Component {
       ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData,
+      userId: this.props.userId,
     };
 
     this.props.onOrderBurger(order,this.props.token);
     
   };
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    if (rules.required) {
-      isValid = value.trim() !== "" && isValid;
-    }
-    if (rules.expLength) {
-      isValid = +value.trim().length === rules.expLength && isValid;
-    }
-    return isValid;
-  };
-
   inputChangedHandler = (event, inputIndetifier) => {
     //console.log(event.target.value);
-    const updatedOrderForm = {
-      ...this.state.orderForm,
-    };
-
-    const updatedFormElement = { ...updatedOrderForm[inputIndetifier] };
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
-    updatedOrderForm[inputIndetifier] = updatedFormElement;
-    updatedFormElement.touched = true;
-
+    const updatedFormElement = updateObject(this.state.orderForm[inputIndetifier],{
+      value:event.target.value,
+      valid:checkValidity(
+        event.target.value,
+        this.state.orderForm[inputIndetifier].validation
+      ),
+      touched:true,
+    });
+    const updatedOrderForm = updateObject(this.state.orderForm,{
+      [inputIndetifier]:updatedFormElement
+    })
+    
     let formIsValid = true;
     for (let inputIndetifier in updatedOrderForm) {
       formIsValid = updatedOrderForm[inputIndetifier].valid && formIsValid;
@@ -195,6 +185,7 @@ const mapStateToProps = state => {
     price:state.burgerBuilder.totalPrice,
     loading:state.order.loading,
     token:state.auth.token,
+    userId:state.auth.userId,
   }
 }
 

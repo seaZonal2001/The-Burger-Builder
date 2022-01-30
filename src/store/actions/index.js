@@ -1,3 +1,3 @@
-export {addIngredient,removeIngredient,initIngredients} from '../../store/actions/burgerBuilder';
-export {purchaseBurger,purchaseInit,fetchOrders} from '../../store/actions/order';
-export {auth,logout,setAuthRedirectPath,checkAuthState} from './auth';
+export {addIngredient,removeIngredient,initIngredients,setIngredients,fetchIngredientsFailed} from '../../store/actions/burgerBuilder';
+export {purchaseBurger,purchaseInit,fetchOrders,purchaseBurgerStart,purchaseBurgerSuccess,purchaseBurgerFail,fetchOrdersStart,fetchOrdersSuccess,fetchOrdersFail} from '../../store/actions/order';
+export {auth,logout,setAuthRedirectPath,checkAuthState,logoutSucceed,authStart,authSuccess,authFail,checkAuthTimeout} from './auth';

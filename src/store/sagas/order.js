@@ -4,7 +4,7 @@ import axios from "../../axios-orders";
 import * as actions from "../actions/index";
 
 export function* purchaseBurgerSaga(action) {
-  yield put(action.purchaseBurgerStart());
+  yield put(actions.purchaseBurgerStart());
   try {
     const response = yield axios.post(
       "/orders.json?auth=" + action.token,
@@ -30,6 +30,7 @@ export function* fetchOrdersSaga(action) {
     const response = yield axios.get("/orders.json" + queryParams);
     const fetchedOrders = [];
     for (let key in response.data) {
+      //console.log(key);
       fetchedOrders.push({ ...response.data[key], id: key });
     }
     yield put(actions.fetchOrdersSuccess(fetchedOrders));

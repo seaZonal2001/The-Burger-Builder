@@ -1,48 +1,46 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import { Route, Redirect } from "react-router-dom";
 import ContactData from "./ContactData/ContactData";
-import * as actions from '../../store/actions/index';
+//import * as actions from "../../store/actions/index";
 
-class Checkout extends Component {
-  checkoutCancelledHandler = () => {
-    this.props.history.goBack();
+const Checkout = (props) => {
+  const checkoutCancelledHandler = () => {
+    props.history.goBack();
   };
 
-  checkoutContinuedHandler = () => {
-    this.props.history.replace("/checkout/contact-data");
+  const checkoutContinuedHandler = () => {
+    props.history.replace("/checkout/contact-data");
   };
 
-  render() {
-    let summary = <Redirect to="/" />;
-    
-    if (this.props.ings) {
-      const purchasedRedirect = this.props.purchased?<Redirect to="/" />:null;
-      summary = (
-        <div>
-          {purchasedRedirect}
-          <CheckoutSummary
-            checkoutCancelled={this.checkoutCancelledHandler}
-            checkoutContinued={this.checkoutContinuedHandler}
-            ingredients={this.props.ings}
-          />
-          <Route
-            path={this.props.match.path + "/contact-data"}
-            component={ContactData}
-          />
-        </div>
-      );
-    }
-    return summary;
+  let summary = <Redirect to="/" />;
+
+  if (props.ings) {
+    const purchasedRedirect = props.purchased ? <Redirect to="/" /> : null;
+    summary = (
+      <div>
+        {purchasedRedirect}
+        <CheckoutSummary
+          checkoutCancelled={checkoutCancelledHandler}
+          checkoutContinued={checkoutContinuedHandler}
+          ingredients={props.ings}
+        />
+        <Route
+          path={props.match.path + "/contact-data"}
+          component={ContactData}
+        />
+      </div>
+    );
   }
-}
+  return summary;
+};
 
 const mapStateToProps = (state) => {
   return {
     ings: state.burgerBuilder.ingredients,
-    purchased:state.order.purchased,
+    purchased: state.order.purchased,
   };
 };
 

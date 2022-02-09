@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
 import Button from "../../UI/Button/Button";
 
-class OrderSummary extends Component {
-
-
-  render() {
-    const ingredientsSummary = Object.keys(this.props.ingredients).map(
+const OrderSummary = props => {
+    const ingredientsSummary = Object.keys(props.ingredients).map(
       (igKey) => {
         return (
           <li key={igKey}>
             <span style={{ textTransform: "capitalize" }}>{igKey}</span>:{" "}
-            {this.props.ingredients[igKey]}
+            {props.ingredients[igKey]}
           </li>
         );
       }
@@ -23,18 +20,17 @@ class OrderSummary extends Component {
         <p>A delicious Burger with the following ingredients</p>
         <ul>{ingredientsSummary}</ul>
         <p>
-          <strong>Total Price: {this.props.price.toFixed(2)}</strong>
+          <strong>Total Price: {props.price.toFixed(2)}</strong>
         </p>
         <p>Continue to Checkout?</p>
-        <Button btnType={"Danger"} clicked={this.props.purchaseCancelled}>
+        <Button btnType={"Danger"} clicked={props.purchaseCancelled}>
           CANCEL
         </Button>
-        <Button btnType={"Success"} clicked={this.props.purchaseContinued}>
+        <Button btnType={"Success"} clicked={props.purchaseContinued}>
           CONTINUE
         </Button>
       </Auxiliary>
     );
-  }
 }
 
 export default OrderSummary;
